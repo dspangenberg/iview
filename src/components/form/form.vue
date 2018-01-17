@@ -66,16 +66,18 @@
                 return new Promise(resolve => {
                     let valid = true;
                     let count = 0;
+                    let myErrors = {}
                     this.fields.forEach(field => {
                         field.validate('', errors => {
                             if (errors) {
                                 valid = false;
+                                myErrors[field.prop] = errors
                             }
                             if (++count === this.fields.length) {
                                 // all finish
                                 resolve(valid);
                                 if (typeof callback === 'function') {
-                                    callback(valid);
+                                    callback(valid, myErrors);
                                 }
                             }
                         });
